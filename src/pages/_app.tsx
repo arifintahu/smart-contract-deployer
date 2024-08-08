@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { fonts } from '@/lib/styles/theme/fonts'
 import { config } from '@/lib/styles/theme/config'
+import Layout from '@/lib/layout'
 
 const customTheme = extendTheme({
   fonts,
@@ -12,7 +13,9 @@ const customTheme = extendTheme({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={customTheme}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ChakraProvider>
   )
 }
