@@ -1,5 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { useNavContext } from '@/lib/app-provider'
 import Header from './Header'
 import SubHeader from './subheader'

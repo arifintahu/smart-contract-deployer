@@ -2,8 +2,6 @@ import { Flex, Image } from '@chakra-ui/react'
 import { SectionWrapper } from './SectionWrapper'
 import { WalletSection } from '@/lib/components/Wallet'
 
-// import { WalletSection } from "lib/components/Wallet";
-
 const Header = () => {
   return (
     <Flex
@@ -16,7 +14,7 @@ const Header = () => {
       <Flex h="full">
         <SectionWrapper minW={'234px'}>
           <Image
-            src={'https://neutron.celat.one/celatone.svg'}
+            src={'/logo.svg'}
             alt="logo"
             minWidth="139px"
             width="139px"

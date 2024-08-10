@@ -11,9 +11,12 @@ import {
   Others,
   WalletConnectComponent,
 } from './wallet/index'
+import { useSnapshot } from 'valtio'
+import { Wallet } from '@/lib/store/wallet.store'
 
 export const WalletSection = () => {
-  const { address, connect, openView, status } = useCurrentChain()
+  const { connect, openView } = useCurrentChain()
+  const { status, address } = useSnapshot(Wallet)
 
   // Events
   const onClickConnect: MouseEventHandler = async (e) => {
