@@ -1,6 +1,6 @@
 import { proxy } from 'valtio'
 
-import { bootstrapWallet } from './wallet.store'
+import { switchNetwork } from './wallet.store'
 import { getItem, isJson, setItem } from '@/lib/utils'
 import { allChainsArray } from '@/lib/data/chains'
 import { ChainInfo } from '@/lib/types'
@@ -26,6 +26,6 @@ export function setActiveChain(chainId: string) {
   if (newChain) {
     Chain.active = newChain
     setItem(LOCALSTORAGE_CHAIN_KEY, JSON.stringify(newChain))
-    bootstrapWallet()
+    switchNetwork()
   }
 }
