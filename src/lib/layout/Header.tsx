@@ -1,6 +1,7 @@
 import { Flex, Image } from '@chakra-ui/react'
 import { SectionWrapper } from './SectionWrapper'
 import { WalletSection } from '@/lib/components/Wallet'
+import { NetworkMenu } from './network-menu'
 
 const Header = () => {
   return (
@@ -26,9 +27,9 @@ const Header = () => {
         </SectionWrapper>
       </Flex>
       <Flex h="full">
-        {/* <SectionWrapper>
+        <SectionWrapper>
           <NetworkMenu />
-        </SectionWrapper> */}
+        </SectionWrapper>
         <SectionWrapper>
           <WalletSection />
         </SectionWrapper>
