@@ -2,10 +2,19 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { useBalance } from '@/lib/hooks'
+import { Wallet } from '@/lib/store/wallet.store'
+import { useSnapshot } from 'valtio'
+import { Text } from '@chakra-ui/react'
+import { displayBalance } from '@/lib/utils'
+import { Chain } from '@/lib/store/chain.store'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { active } = useSnapshot(Chain)
+  const { address } = useSnapshot(Wallet)
+  const { data: balance, isFetched } = useBalance(address)
   return (
     <>
       <Head>
@@ -19,6 +28,11 @@ export default function Home() {
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code>
+            {isFetched && (
+              <Text>
+                Balance: {displayBalance(balance ?? 0, active.nativeCurrency)}
+              </Text>
+            )}
           </p>
           <div>
             <a
