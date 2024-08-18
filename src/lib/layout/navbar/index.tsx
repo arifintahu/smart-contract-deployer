@@ -8,6 +8,7 @@ import { useIsCurrentPage } from '@/lib/hooks'
 import { CollapseNavMenu } from './Collapse'
 import { ExpandNavMenu } from './Expand'
 import type { MenuInfo } from './types'
+import { IconKeys } from '@/lib/components/icon'
 
 interface NavbarProps {
   isExpand: boolean
@@ -21,7 +22,18 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: 'Developer Tools',
       slug: StorageKeys.DevSidebar,
-      submenu: [],
+      submenu: [
+        {
+          name: 'Deploy Contract',
+          slug: '/deploy',
+          icon: 'add-new' as IconKeys,
+        },
+        {
+          name: 'Query / Execute',
+          slug: '/interact-contract',
+          icon: 'query' as IconKeys,
+        },
+      ],
     },
   ]
 

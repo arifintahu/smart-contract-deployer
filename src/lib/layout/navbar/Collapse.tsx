@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Image } from '@chakra-ui/react'
+import { Box, Flex, IconButton, Image, Tooltip } from '@chakra-ui/react'
 
 import { AppLink } from '@/lib/components/AppLink'
 import { CustomIcon } from '@/lib/components/icon'
@@ -67,18 +67,20 @@ export const CollapseNavMenu = ({
           }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <IconButton
-              aria-label="overview"
-              variant="ghost-accent"
-              fontSize="24px"
-              height="fit-content"
-              minW="fit-content"
-              p={1}
-              mt={2}
-              mx={2}
-              icon={<CustomIcon name="double-chevron-right" />}
-              onClick={() => setIsExpand(true)}
-            />
+            <Tooltip label="Expand" placement="right">
+              <IconButton
+                aria-label="overview"
+                variant="ghost-accent"
+                fontSize="24px"
+                height="fit-content"
+                minW="fit-content"
+                p={1}
+                mt={2}
+                mx={2}
+                icon={<CustomIcon name="double-chevron-right" />}
+                onClick={() => setIsExpand(true)}
+              />
+            </Tooltip>
           </Flex>
           {item.submenu.map((submenu) =>
             submenu.isDisable ? (
