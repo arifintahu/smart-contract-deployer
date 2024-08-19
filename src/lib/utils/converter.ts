@@ -7,7 +7,7 @@ export function hexToBigInt(hex: string): bigint {
 export function displayBalance(
   balance: number,
   currency: ChainCurrency,
-  maxDecimals: number = 2
+  maxDecimals: number = 4
 ): string {
   const decimalPlaces = Math.pow(10, maxDecimals)
   const value =

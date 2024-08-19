@@ -3,6 +3,7 @@ import { Flex, Text } from '@chakra-ui/react'
 import { CustomIcon } from '@/lib/components/icon'
 import { Chain } from '@/lib/store/chain.store'
 import { useSnapshot } from 'valtio'
+import { useEffect, useState } from 'react'
 
 interface NetworkButtonProps {
   isMobile: boolean
@@ -11,6 +12,13 @@ interface NetworkButtonProps {
 
 export const NetworkButton = ({ isMobile, onClick }: NetworkButtonProps) => {
   const { active } = useSnapshot(Chain)
+
+  // prevent hydration error
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const width = isMobile ? '220px' : '170px'
   return (
@@ -35,7 +43,7 @@ export const NetworkButton = ({ isMobile, onClick }: NetworkButtonProps) => {
         whiteSpace="nowrap"
         maxW={width}
       >
-        {active.name}
+        {isClient ? active.name : ''}
       </Text>
       <CustomIcon name="chevron-down" color="gray.600" />
     </Flex>

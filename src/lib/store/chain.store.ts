@@ -21,11 +21,10 @@ export const Chain = proxy<ChainStore>({
   all: allChainsArray,
 })
 
-export function setActiveChain(chainId: string) {
+export async function setActiveChain(chainId: string) {
   const newChain = Chain.all.find((chain) => chain.chainId === chainId)
   if (newChain) {
-    Chain.active = newChain
+    await switchNetwork(newChain)
     setItem(LOCALSTORAGE_CHAIN_KEY, JSON.stringify(newChain))
-    switchNetwork()
   }
 }

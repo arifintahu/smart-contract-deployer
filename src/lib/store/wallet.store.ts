@@ -1,8 +1,8 @@
 import { MetaMaskInpageProvider } from '@metamask/providers'
-import { proxy, ref } from 'valtio'
+import { proxy, ref, snapshot } from 'valtio'
 import Web3 from 'web3'
 import { hexToBigInt, logError, throwError } from '@/lib/utils'
-import { WalletStatus } from '@/lib/types'
+import { ChainInfo, WalletStatus } from '@/lib/types'
 import { Chain } from './chain.store'
 
 declare global {
@@ -22,10 +22,10 @@ export const Wallet = proxy<WalletStore>({
 })
 
 export async function bootstrapWallet() {
-  const { ethereum } = window
-  if (!ethereum) {
+  const provider = window.ethereum
+  if (!provider) {
     Wallet.status = WalletStatus.NotExist
-    throwError('Keplr is not installed')
+    throwError('Wallet is not installed')
   }
 
   if (Wallet.status === WalletStatus.Disconnected) {
@@ -33,7 +33,9 @@ export async function bootstrapWallet() {
   }
 
   try {
-    Wallet.web3 = ref(new Web3(ethereum))
+    Wallet.web3 = ref(new Web3(provider))
+
+    await switchNetwork(Chain.active)
 
     await Wallet.web3.currentProvider?.request({
       method: 'eth_requestAccounts',
@@ -52,17 +54,17 @@ export async function bootstrapWallet() {
   }
 }
 
-export async function switchNetwork() {
+export async function switchNetwork(newChain: ChainInfo) {
   try {
     if (Wallet.web3) {
       const chainId = await Wallet.web3.eth.getChainId()
-      if (chainId === hexToBigInt(Chain.active.chainId)) {
+      if (chainId === hexToBigInt(newChain.chainId)) {
         return
       }
 
       await Wallet.web3.currentProvider?.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: Chain.active.chainId }],
+        params: [{ chainId: newChain.chainId }],
       })
     } else {
       throwError('Web3 is not initialized')
@@ -74,20 +76,27 @@ export async function switchNetwork() {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: Chain.active.chainId,
-              rpcUrls: Chain.active.rpcUrls,
-              chainName: Chain.active.name,
-              nativeCurrency: Chain.active.nativeCurrency,
-              blockExplorerUrls: Chain.active.blockExplorerUrls,
+              chainId: newChain.chainId,
+              chainName: newChain.name,
+              nativeCurrency: newChain.nativeCurrency,
+              rpcUrls: newChain.rpcUrls,
+              blockExplorerUrls: newChain.blockExplorerUrls,
             },
           ],
         })
-
-        return
       } catch (error) {
         logError(error)
       }
     }
     logError(error)
   }
+
+  const provider = window.ethereum
+  if (!provider) {
+    Wallet.status = WalletStatus.NotExist
+    throwError('Wallet is not installed')
+  }
+
+  Wallet.web3 = ref(new Web3(provider))
+  Chain.active = newChain
 }

@@ -8,13 +8,19 @@ import { useSnapshot } from 'valtio'
 import { Text } from '@chakra-ui/react'
 import { displayBalance } from '@/lib/utils'
 import { Chain } from '@/lib/store/chain.store'
+import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const { active } = useSnapshot(Chain)
   const { address } = useSnapshot(Wallet)
-  const { data: balance, isFetched } = useBalance(address)
+  const { data: balance, isFetched, refetch } = useBalance(address)
+
+  useEffect(() => {
+    refetch()
+  }, [active])
+
   return (
     <>
       <Head>
