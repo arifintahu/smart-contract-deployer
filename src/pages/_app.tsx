@@ -7,12 +7,14 @@ import { fonts } from '@/lib/styles/theme/fonts'
 import { config } from '@/lib/styles/theme/config'
 import Layout from '@/lib/layout'
 import { NavProvider } from '@/lib/app-provider'
+import { components } from '@/lib/styles/theme/components'
 
 const queryClient = new QueryClient()
 
 const customTheme = extendTheme({
   fonts,
   config,
+  components,
 })
 
 export default function App({ Component, pageProps }: AppProps) {
