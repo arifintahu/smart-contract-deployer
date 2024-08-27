@@ -18,7 +18,7 @@ const txInfo = {
 const Home = () => {
   const { active } = useSnapshot(Chain)
   const { address } = useSnapshot(Wallet)
-  const { data: balance, isFetched, refetch, isLoading } = useBalance(address)
+  const { data: balance, refetch, isLoading } = useBalance(address)
 
   useEffect(() => {
     refetch()
