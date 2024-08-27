@@ -15,3 +15,9 @@ export function displayBalance(
     decimalPlaces
   return `${value} ${currency.symbol}`
 }
+
+export function displayWeiToGwei(wei: number): string {
+  const gwei = 10 ** 9
+  const value = Number(wei / gwei).toFixed(2)
+  return `${value} gwei`
+}

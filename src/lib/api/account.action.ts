@@ -1,15 +1,15 @@
 import { throwError } from '@/lib/utils'
-import { Wallet } from '@/lib/store/wallet.store'
+import Web3 from 'web3'
 
-export async function fetchBalance(address?: string): Promise<number> {
+export async function fetchBalance(
+  web3?: Web3,
+  address?: string
+): Promise<number> {
+  if (!web3) throwError('Wallet is not connected')
   if (!address) throwError('Address is required')
   try {
-    if (Wallet.web3) {
-      const result = await Wallet.web3.eth.getBalance(address)
-      return Number(result)
-    } else {
-      throwError('Wallet is not connected')
-    }
+    const result = await web3.eth.getBalance(address)
+    return Number(result)
   } catch (error) {
     throwError(error)
   }

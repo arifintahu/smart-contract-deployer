@@ -6,22 +6,34 @@ import PageContainer from '@/lib/components/PageContainer'
 import { useSnapshot } from 'valtio'
 import { Chain } from '@/lib/store/chain.store'
 import { Wallet } from '@/lib/store/wallet.store'
-import { useBalance } from '@/lib/hooks'
+import { useBalance, useBlockNumber, useGasPrice } from '@/lib/hooks'
 import { useEffect } from 'react'
-import { displayBalance } from '@/lib/utils'
+import { displayBalance, displayWeiToGwei } from '@/lib/utils'
 import { ConnectWalletAlert } from '@/lib/components/ConnectWalletAlert'
-
-const txInfo = {
-  title: 'My Balance',
-}
 
 const Home = () => {
   const { active } = useSnapshot(Chain)
   const { address } = useSnapshot(Wallet)
-  const { data: balance, refetch, isLoading } = useBalance(address)
+  const {
+    data: balance,
+    refetch: refetchBalance,
+    isLoading: isLoadingBalance,
+  } = useBalance(Wallet.web3, address)
+  const {
+    data: blockNumber,
+    refetch: refetchBlockNumber,
+    isLoading: isLoadingBlockNumber,
+  } = useBlockNumber(Wallet.web3)
+  const {
+    data: gasPrice,
+    refetch: refetchGasPrice,
+    isLoading: isLoadingGasPrice,
+  } = useGasPrice(Wallet.web3)
 
   useEffect(() => {
-    refetch()
+    refetchBalance()
+    refetchBlockNumber()
+    refetchGasPrice()
   }, [active])
 
   return (
@@ -55,19 +67,19 @@ const Home = () => {
           {!!address && (
             <Flex gap={4} direction={{ base: 'column', md: 'row' }}>
               <CardInfo
-                title={txInfo.title}
+                title={'My Balance'}
                 value={displayBalance(balance ?? 0, active.nativeCurrency)}
-                isLoading={isLoading}
+                isLoading={isLoadingBalance}
               />
               <CardInfo
-                title={txInfo.title}
-                value={displayBalance(balance ?? 0, active.nativeCurrency)}
-                isLoading={isLoading}
+                title={'Last Block'}
+                value={blockNumber?.toString()}
+                isLoading={isLoadingBlockNumber}
               />
               <CardInfo
-                title={txInfo.title}
-                value={displayBalance(balance ?? 0, active.nativeCurrency)}
-                isLoading={isLoading}
+                title={'Recent Gas Price'}
+                value={displayWeiToGwei(gasPrice ?? 0)}
+                isLoading={isLoadingGasPrice}
               />
             </Flex>
           )}
