@@ -6,6 +6,7 @@ import { ConnectWalletAlert } from '@/lib/components/ConnectWalletAlert'
 import { ButtonCard } from '@/lib/components/ButtonCard'
 import { useSnapshot } from 'valtio'
 import { Wallet } from '@/lib/store/wallet.store'
+import PageContainer from '@/lib/components/PageContainer'
 
 const Deploy = () => {
   const { address } = useSnapshot(Wallet)
@@ -17,7 +18,7 @@ const Deploy = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <PageContainer>
         <ActionPageContainer>
           <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
             DEPLOY NEW CONTRACT
@@ -46,7 +47,7 @@ const Deploy = () => {
             onClick={() => {}}
           />
         </ActionPageContainer>
-      </main>
+      </PageContainer>
     </>
   )
 }
