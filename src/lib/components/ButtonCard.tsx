@@ -28,11 +28,11 @@ export const ButtonCard = ({
     align="center"
     justify="space-between"
     onClick={!disabled ? onClick : undefined}
-    bgColor="gray.800"
+    bgColor="gray.700"
     borderRadius="8px"
     w="100%"
     cursor="pointer"
-    _hover={{ bgColor: 'gray.700' }}
+    _hover={{ bgColor: 'gray.600' }}
     transition="all 0.25s ease-in-out"
     _disabled={{
       bgColor: 'gray.900',

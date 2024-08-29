@@ -7,8 +7,10 @@ import { ButtonCard } from '@/lib/components/ButtonCard'
 import { useSnapshot } from 'valtio'
 import { Wallet } from '@/lib/store/wallet.store'
 import PageContainer from '@/lib/components/PageContainer'
+import { useInternalNavigate } from '@/lib/app-provider'
 
 const Deploy = () => {
+  const navigate = useInternalNavigate()
   const { address } = useSnapshot(Wallet)
   return (
     <>
@@ -37,7 +39,7 @@ const Deploy = () => {
             title="Use byte code"
             description={'Upload a contract byte code on-chain'}
             disabled={!address}
-            onClick={() => {}}
+            onClick={() => navigate({ pathname: '/deploy-byte' })}
             mb={4}
           />
           <ButtonCard

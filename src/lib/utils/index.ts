@@ -1,5 +1,6 @@
 export * from './converter'
 export * from './error'
+export * from './scroll'
 export * from './storage'
 export * from './truncate'
 export * from './validators'
