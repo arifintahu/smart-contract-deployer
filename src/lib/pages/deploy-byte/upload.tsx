@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from '@chakra-ui/react'
+import { Button, Flex, Heading, Text, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import ActionPageContainer from '@/lib/components/ActionPageContainer'
@@ -26,15 +26,31 @@ export const Upload = () => {
           subtitle="You need to connect your wallet first"
           mb={12}
         />
-        {/* <UploadSection
-          formData={formData}
-          estimatedFee={estimatedFee}
-          setEstimatedFee={setEstimatedFee}
-          shouldNotSimulate={shouldNotSimulate}
-          setDefaultBehavior={setDefaultBehavior}
-          simulateStatus={simulateStatus}
-          isSimulating={isSimulating}
-        /> */}
+        <form style={{ width: '100%' }}>
+          <Flex align="center" justify="space-between" mt={12} mb={4}>
+            <Heading variant="h6" as="h6" alignSelf="flex-start">
+              ABI Json
+            </Heading>
+          </Flex>
+          <Textarea placeholder="Here is a sample placeholder" />
+          <Flex justifyContent="end">
+            <Button variant="outline-gray" w="128px">
+              Select File
+            </Button>
+          </Flex>
+
+          <Flex align="center" justify="space-between" mt={12} mb={4}>
+            <Heading variant="h6" as="h6" alignSelf="flex-start">
+              Byte Code
+            </Heading>
+          </Flex>
+          <Textarea placeholder="Here is a sample placeholder" />
+          <Flex justifyContent="end">
+            <Button variant="outline-gray" w="128px">
+              Select File
+            </Button>
+          </Flex>
+        </form>
       </ActionPageContainer>
       <FooterCta
         cancelButton={{
