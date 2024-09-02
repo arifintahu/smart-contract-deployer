@@ -8,12 +8,19 @@ import { FooterCta } from '@/lib/components/layouts'
 import { Stepper } from '@/lib/components/stepper'
 import { useEffect, useState } from 'react'
 import { SelectFileBtn } from '@/lib/components/button/SelectFileButton'
+import { useSnapshot } from 'valtio'
+import { Wallet } from '@/lib/store/wallet.store'
+import Web3 from 'web3'
+import { useGasPrice } from '@/lib/hooks'
 
 export const Dedploy = ({
   onComplete,
 }: {
   onComplete: (value: boolean) => void
 }) => {
+  const { web3, address } = useSnapshot(Wallet)
+  const { data: gasPrice } = useGasPrice(Wallet.web3)
+
   const router = useRouter()
   const [contractAbi, setContractAbi] = useState('')
   const [byteCode, setByteCode] = useState('')
@@ -32,6 +39,36 @@ export const Dedploy = ({
   const onChangeByteCode = (fileContents: string[]) => {
     if (fileContents.length) {
       setByteCode(fileContents[0])
+    }
+  }
+
+  const onDeploy = async () => {
+    try {
+      if (web3 && gasPrice) {
+        const provider = new Web3(web3.currentProvider)
+        const contract = new provider.eth.Contract(JSON.parse(contractAbi))
+
+        const contractDeployer = contract.deploy({
+          data: '0x' + byteCode,
+          arguments: [1],
+        })
+
+        const gas = await contractDeployer.estimateGas({
+          from: address,
+        })
+        console.log('Estimated gas:', gas)
+
+        const tx = await contractDeployer.send({
+          from: address,
+          gas: gas.toString(),
+          gasPrice: gasPrice.toString(),
+        })
+        console.log('Contract deployed at address: ' + tx.options.address)
+
+        onComplete(true)
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -96,7 +133,7 @@ export const Dedploy = ({
         }}
         actionButton={{
           isDisabled: isDisabled,
-          onClick: () => onComplete(true),
+          onClick: onDeploy,
         }}
         actionLabel="Deploy"
       />
