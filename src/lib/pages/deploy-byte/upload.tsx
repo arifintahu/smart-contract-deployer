@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text, Textarea } from '@chakra-ui/react'
+import { Flex, Heading, Text, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import ActionPageContainer from '@/lib/components/ActionPageContainer'
@@ -6,9 +6,34 @@ import { ConnectWalletAlert } from '@/lib/components/ConnectWalletAlert'
 import { CustomIcon } from '@/lib/components/icon'
 import { FooterCta } from '@/lib/components/layouts'
 import { Stepper } from '@/lib/components/stepper'
+import { useEffect, useState } from 'react'
+import { SelectFileBtn } from '@/lib/components/button/SelectFileButton'
 
-export const Upload = () => {
+export const Upload = ({
+  onComplete,
+}: {
+  onComplete: (value: boolean) => void
+}) => {
   const router = useRouter()
+  const [contractAbi, setContractAbi] = useState('')
+  const [byteCode, setByteCode] = useState('')
+  const [isDisabled, setIsDisabled] = useState(true)
+
+  const onChangeContractAbi = (fileContents: string[]) => {
+    if (fileContents.length) {
+      setContractAbi(fileContents[0])
+    }
+  }
+
+  const onChangeByteCode = (fileContents: string[]) => {
+    if (fileContents.length) {
+      setByteCode(fileContents[0])
+    }
+  }
+
+  useEffect(() => {
+    setIsDisabled(!contractAbi || !byteCode)
+  }, [contractAbi, byteCode])
 
   return (
     <>
@@ -29,14 +54,20 @@ export const Upload = () => {
         <form style={{ width: '100%' }}>
           <Flex align="center" justify="space-between" mt={12} mb={4}>
             <Heading variant="h6" as="h6" alignSelf="flex-start">
-              ABI Json
+              Contract ABI
             </Heading>
           </Flex>
-          <Textarea placeholder="Here is a sample placeholder" />
+          <Textarea
+            placeholder="Contract ABI JSON File"
+            value={contractAbi}
+            onChange={(e) => setContractAbi(e.target.value)}
+            minHeight={200}
+          />
           <Flex justifyContent="end">
-            <Button variant="outline-gray" w="128px">
-              Select File
-            </Button>
+            <SelectFileBtn
+              onChange={onChangeContractAbi}
+              allowedExtensions={['json']}
+            />
           </Flex>
 
           <Flex align="center" justify="space-between" mt={12} mb={4}>
@@ -44,11 +75,17 @@ export const Upload = () => {
               Byte Code
             </Heading>
           </Flex>
-          <Textarea placeholder="Here is a sample placeholder" />
+          <Textarea
+            placeholder="Contract Byte Code"
+            value={byteCode}
+            onChange={(e) => setByteCode(e.target.value)}
+            minHeight={200}
+          />
           <Flex justifyContent="end">
-            <Button variant="outline-gray" w="128px">
-              Select File
-            </Button>
+            <SelectFileBtn
+              onChange={onChangeByteCode}
+              allowedExtensions={['bin']}
+            />
           </Flex>
         </form>
       </ActionPageContainer>
@@ -58,8 +95,8 @@ export const Upload = () => {
           onClick: router.back,
         }}
         actionButton={{
-          isDisabled: true,
-          onClick: () => {},
+          isDisabled: isDisabled,
+          onClick: () => onComplete(true),
         }}
         actionLabel="Upload"
       />
