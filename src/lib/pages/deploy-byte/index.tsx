@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { UploadComplete } from './completed'
-import { Upload } from './upload'
+import { DeployComplete } from './completed'
+import { Dedploy } from './deploy'
 import Head from 'next/head'
 
 const DeployByte = () => {
@@ -15,7 +15,7 @@ const DeployByte = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {completed ? <UploadComplete /> : <Upload onComplete={setCompleted} />}
+      {completed ? <DeployComplete /> : <Dedploy onComplete={setCompleted} />}
     </>
   )
 }

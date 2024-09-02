@@ -9,7 +9,7 @@ import { Stepper } from '@/lib/components/stepper'
 import { useEffect, useState } from 'react'
 import { SelectFileBtn } from '@/lib/components/button/SelectFileButton'
 
-export const Upload = ({
+export const Dedploy = ({
   onComplete,
 }: {
   onComplete: (value: boolean) => void
@@ -18,6 +18,10 @@ export const Upload = ({
   const [contractAbi, setContractAbi] = useState('')
   const [byteCode, setByteCode] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+
+  useEffect(() => {
+    setIsDisabled(!contractAbi || !byteCode)
+  }, [contractAbi, byteCode])
 
   const onChangeContractAbi = (fileContents: string[]) => {
     if (fileContents.length) {
@@ -30,10 +34,6 @@ export const Upload = ({
       setByteCode(fileContents[0])
     }
   }
-
-  useEffect(() => {
-    setIsDisabled(!contractAbi || !byteCode)
-  }, [contractAbi, byteCode])
 
   return (
     <>
@@ -98,7 +98,7 @@ export const Upload = ({
           isDisabled: isDisabled,
           onClick: () => onComplete(true),
         }}
-        actionLabel="Upload"
+        actionLabel="Deploy"
       />
     </>
   )

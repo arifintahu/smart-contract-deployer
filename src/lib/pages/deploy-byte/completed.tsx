@@ -5,7 +5,7 @@ import ActionPageContainer from '@/lib/components/ActionPageContainer'
 import { CustomIcon } from '@/lib/components/icon'
 import { Stepper } from '@/lib/components/stepper'
 
-export const UploadComplete = observer(() => {
+export const DeployComplete = observer(() => {
   return (
     <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -19,7 +19,7 @@ export const UploadComplete = observer(() => {
         mt={10}
       />
       <Heading as="h4" variant="h4" mt={4} mb={12}>
-        Upload File Complete!
+        Deploy Complete!
       </Heading>
       <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
         Contract has been deployed.
