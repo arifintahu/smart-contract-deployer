@@ -5,7 +5,7 @@ import ActionPageContainer from '@/lib/components/ActionPageContainer'
 import { CustomIcon } from '@/lib/components/icon'
 import { Stepper } from '@/lib/components/stepper'
 
-export const DeployComplete = observer(() => {
+export const DeployComplete = observer(({ address }: { address: string }) => {
   return (
     <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -23,6 +23,9 @@ export const DeployComplete = observer(() => {
       </Heading>
       <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
         Contract has been deployed.
+      </Text>
+      <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
+        {address}
       </Text>
     </ActionPageContainer>
   )

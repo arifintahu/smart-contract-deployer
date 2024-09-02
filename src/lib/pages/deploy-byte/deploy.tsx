@@ -13,10 +13,12 @@ import { Wallet } from '@/lib/store/wallet.store'
 import Web3 from 'web3'
 import { useGasPrice } from '@/lib/hooks'
 
-export const Dedploy = ({
+export const Deploy = ({
   onComplete,
+  onAddress,
 }: {
   onComplete: (value: boolean) => void
+  onAddress: (value: string) => void
 }) => {
   const { web3, address } = useSnapshot(Wallet)
   const { data: gasPrice } = useGasPrice(Wallet.web3)
@@ -25,6 +27,7 @@ export const Dedploy = ({
   const [contractAbi, setContractAbi] = useState('')
   const [byteCode, setByteCode] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+  const [isWaiting, setIsWaiting] = useState(false)
 
   useEffect(() => {
     setIsDisabled(!contractAbi || !byteCode)
@@ -45,6 +48,7 @@ export const Dedploy = ({
   const onDeploy = async () => {
     try {
       if (web3 && gasPrice) {
+        setIsWaiting(true)
         const provider = new Web3(web3.currentProvider)
         const contract = new provider.eth.Contract(JSON.parse(contractAbi))
 
@@ -56,7 +60,6 @@ export const Dedploy = ({
         const gas = await contractDeployer.estimateGas({
           from: address,
         })
-        console.log('Estimated gas:', gas)
 
         const tx = await contractDeployer.send({
           from: address,
@@ -66,9 +69,12 @@ export const Dedploy = ({
         console.log('Contract deployed at address: ' + tx.options.address)
 
         onComplete(true)
+        onAddress(tx.options.address ?? '')
+        setIsWaiting(false)
       }
     } catch (error) {
       console.error(error)
+      setIsWaiting(false)
     }
   }
 
@@ -127,6 +133,7 @@ export const Dedploy = ({
         </form>
       </ActionPageContainer>
       <FooterCta
+        loading={isWaiting}
         cancelButton={{
           leftIcon: <CustomIcon name="chevron-left" />,
           onClick: router.back,
