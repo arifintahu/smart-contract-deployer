@@ -62,7 +62,8 @@ export async function switchNetwork(newChain: ChainInfo) {
         return
       }
 
-      await Wallet.web3.currentProvider?.request({
+      const { provider } = new Web3(Wallet.web3.currentProvider)
+      await provider?.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: newChain.chainId }],
       })
@@ -72,7 +73,8 @@ export async function switchNetwork(newChain: ChainInfo) {
   } catch (error: any) {
     if (error.code === 4902) {
       try {
-        await Wallet.web3?.currentProvider?.request({
+        const { provider } = new Web3(Wallet.web3?.currentProvider)
+        await provider?.request({
           method: 'wallet_addEthereumChain',
           params: [
             {
